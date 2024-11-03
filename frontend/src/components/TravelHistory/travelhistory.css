@@ -1,7 +1,8 @@
 .cancup {
-    /* border:1px solid white; */
     height: auto;
-    background-color: #4bf139b0;
+    background-color: #4bf139b0; /* Semi-transparent green */
+    margin-right: 21px;
+    margin-left: -9px;
 }
 
 .App-payment {
@@ -9,10 +10,9 @@
     text-align: center;
     margin-top: 20px;
     border: 1px solid white;
-    background-color: rgba(202, 177, 177, 0.603);
+    background-color: rgba(202, 177, 177, 0.603); /* Semi-transparent background */
     border-radius: 5px;
-    margin-bottom:20px;
-    padding-bottom:30px;
+    margin-bottom: 20px;
 }
 
 .credit-form {
@@ -29,7 +29,7 @@
     border-radius: 5px;
     width: 80%;
     height: 38px;
-    padding: 0px 5px;
+    padding: 0 5px;
     text-align: center;
 }
 
@@ -39,23 +39,21 @@
 }
 
 .columnThree {
-    /* float: right; */
     width: 90%;
     padding: 10px;
-    margin: 0;
+    margin: 0 auto; /* Center columnThree */
     text-align: center;
-    margin-left: 43px;
-    border: 1px solid rgb(255, 255, 255);
-    background-color: rgba(255, 255, 255, 0.603);
+    border: 1px solid #fff; /* Use hex for consistency */
+    background-color: rgba(255, 255, 255, 0.603); /* Semi-transparent white */
     height: fit-content;
     margin-top: 20px;
     border-radius: 5px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 .btCustoms {
     width: 40%;
-    margin-left: 290px;
+    margin: 0 auto; /* Center button */
 }
 
 .pPayment {
@@ -70,33 +68,34 @@
     text-align: center;
 }
 
-.pt{
-    padding-left:0;
+.pt {
+    padding-left: 0;
 }
-.usrName{
+
+.usrName {
     text-transform: capitalize;
 }
 
-.hdng{
+.hdng {
     font-weight: bold;
 }
 
-.hr1{
+.hr1, .hr2 {
     background-color: black;
-    width:38%;
-    position:absolute;
-    left:51%;
-    top:37%;
-    
-}
-.hr2{
-    background-color: black;
-    width:38%;
-    position:absolute;
-    left:51%;
-    top:55%;
+    width: 38%;
+    position: absolute;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center adjustment */
 }
 
-.hr3{
-    background-color: rgba(94, 91, 91, 0.685);
+.hr1 {
+    top: 37%;
+}
+
+.hr2 {
+    top: 55%;
+}
+
+.hr3 {
+    background-color: rgba(94, 91, 91, 0.685); /* Semi-transparent gray */
 }

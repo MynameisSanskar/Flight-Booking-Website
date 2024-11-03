@@ -1,9 +1,7 @@
-import React from 'react'
-
-import './travelhistory.css'
-import jwt_decode from 'jwt-decode'
+import React from 'react';
+import './travelhistory.css';
+import jwt_decode from 'jwt-decode';
 import KommunicateChat from '../Chat';
-
 
 export default class App extends React.Component {
     state = {
@@ -15,140 +13,117 @@ export default class App extends React.Component {
         focused: '',
         formData: '',
         token: ''
-    }
+    };
 
     componentDidMount() {
-        const tok = sessionStorage.getItem('authToken')
-        const decoded = jwt_decode(tok)
-        this.setState({ token: decoded.user })
+        const tok = sessionStorage.getItem('authToken');
+        if (tok) {
+            const decoded = jwt_decode(tok);
+            this.setState({ token: decoded.user });
+        }
     }
 
     handleCallback = ({ issuer }, isValid) => {
         if (isValid) {
-            this.setState({ issuer })
+            this.setState({ issuer });
         }
     }
 
     handleInputFocus = ({ target }) => {
         this.setState({
             focused: target.name
-        })
+        });
     }
-   
 
     handleSubmit = e => {
-        e.preventDefault()
-        const { issuer } = this.state
+        e.preventDefault();
         const formData = [...e.target.elements]
             .filter(d => d.name)
             .reduce((acc, d) => {
-                acc[d.name] = d.value
-                return acc
-            }, {})
+                acc[d.name] = d.value;
+                return acc;
+            }, {});
 
-        this.setState({ formData })
-        this.form.reset()
+        this.setState({ formData });
+        this.form.reset();
     }
 
-    moveToCancelPage = e => {
-        e.preventDefault()
-        localStorage.setItem('paymentData', JSON.stringify(this.state.token))
-        window.location.href = '/cancelledPage'
+    moveToPage = (page) => e => {
+        e.preventDefault();
+        localStorage.setItem('paymentData', JSON.stringify(this.state.token));
+        window.location.href = `/${page}`;
     }
 
-    moveToCompletedpage = e => {
-        e.preventDefault()
-        localStorage.setItem('paymentData', JSON.stringify(this.state.token))
-        window.location.href = '/completedPage'
-    }
-
-    moveToupcomingpage = e => {
-        e.preventDefault()
-        localStorage.setItem('paymentData', JSON.stringify(this.state.token))
-        window.location.href = '/upcomingPage'
-    }
-    
     renderNamesOfPassenger = () => {
-        let passArray = localStorage.getItem('nameData')
+        const passArray = localStorage.getItem('nameData');
         if (passArray) {
-            let nameArray = JSON.parse(passArray)
-            return nameArray.map((name, idx) => {
-                return <p key={idx} > {name} </p>
-            })
+            const nameArray = JSON.parse(passArray);
+            return nameArray.map((name, idx) => <p key={idx}>{name}</p>);
         }
+        return null;
     }
 
     renderSeatNumbers = () => {
-        let seatArray = localStorage.getItem('reservedSeats')
+        const seatArray = localStorage.getItem('reservedSeats');
         if (seatArray) {
-            let seaArr = JSON.parse(seatArray)
-            return seaArr.map((seat, idx) => {
-                return <p key={idx} > {seat} </p>
-            })
+            const seaArr = JSON.parse(seatArray);
+            return seaArr.map((seat, idx) => <p key={idx}>{seat}</p>);
         }
+        return null;
     }
 
     getSumTotal = () => {
-        let count = 0
-        let tax = 150
-        let seatArray = localStorage.getItem('reservedSeats')
+        let count = 0;
+        const tax = 150;
+        const seatArray = localStorage.getItem('reservedSeats');
         if (seatArray) {
-            let seaArr = JSON.parse(seatArray)
-            for (let i = 0; i < seaArr.length; i++) {
-                count++
-            }
-            return (<div>
-                <hr className='hr3' />
-                <p> {1000 * count} </p> <p> +{tax} </p > < p > {1000 * count + tax} </p>{' '} </div>
-            )
+            const seaArr = JSON.parse(seatArray);
+            count = seaArr.length; // Count the number of reserved seats
         }
-    }
-  
-    render() {
-        const {
-            name,
-            number,
-            expiry,
-            cvc,
-            focused,
-            issuer,
-            formData,
-            token
-        } = this.state
-
+        const total = 1000 * count + tax;
         return (
-        
-        <div className='cancup' >
-            <div className='row' >
-                
-                <div className='columnThree' >
-                    <h3 > SWADESHI AIRLINES </h3>{' '}
-                    <div>
-                        <p> TRAVEL HISTORY DETAILS </p>{' '}
-                        <div className='row' >
-                            
-                            
-                                <button style={{marginRight:40}}onClick={e => this.moveToupcomingpage(e)}
-                                    className='btn btn-light btCustoms' >
-                                    Upcoming Flights {' '}
-                                </button>{' '}
-                                &nbsp;&nbsp;
-                                <button style={{marginRight:40}} onClick={e => this.moveToCompletedpage(e)}
-                                    className='btn btn-light btCustoms' >
-                                    Completed Trips  {' '}
-                                </button>{' '}
-                                &nbsp;&nbsp;
-                                <button style={{marginRight:40}} onClick={e => this.moveToCancelPage(e)}
-                                    className='btn btn-light btCustoms' >
-                                    Cancelled Flights {' '}
-                                </button>{' '}
+            <div>
+                <hr className='hr3' />
+                <p>{1000 * count}</p>
+                <p>+ {tax}</p>
+                <p>{total}</p>
+            </div>
+        );
+    }
 
-                        </div>{' '}
-                    </div>{' '}
-                </div>{' '}
-            </div>{' '}
-        </div>
-        
-        )
+    render() {
+        return (
+            <div className='cancup'>
+                <div className='row'>
+                    <div className='columnThree'>
+                        <h3>SWADESHI AIRLINES</h3>
+                        <p>TRAVEL HISTORY DETAILS</p>
+                        <div className='row'>
+                            <button
+                                style={{ marginRight: 162 }}
+                                onClick={this.moveToPage('upcomingPage')}
+                                className='btn btn-light btCustoms'
+                            >
+                                Upcoming Flights
+                            </button>
+                            <button
+                                style={{ marginRight: 162 }}
+                                onClick={this.moveToPage('completedPage')}
+                                className='btn btn-light btCustoms'
+                            >
+                                Completed Trips
+                            </button>
+                            <button
+                                style={{ marginRight: 162 }}
+                                onClick={this.moveToPage('cancelledPage')}
+                                className='btn btn-light btCustoms'
+                            >
+                                Cancelled Flights
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 }

@@ -198,6 +198,7 @@ ol {
 
 .ss {
     /* width: auto; */
+    margin-left: -15px;
     width: 100%;
     border: 1px solid #00acee;
     background-color: #00abeeb0;
