@@ -5,6 +5,10 @@
 
 .row {
     margin-left: 15px;
+    /* height: 50px; Set the fixed height */
+    /* line-height: 50px; Set line-height to match height for vertical centering */
+    /* display: flex; Use flexbox for better alignment */
+    /* align-items: center; Vertically center the content inside the row */
 }
 
 .nonActive {

@@ -1,0 +1,25 @@
+{
+  "feedback": [
+    {
+      "id": "f3b5",
+      "name": "Sanskar Wakchaure ",
+      "email": "sanskarwakchaure7@gmail.com",
+      "message": "hi mast tha",
+      "rating": "5"
+    },
+    {
+      "id": "0a26",
+      "name": "Sanskar prakash wakchaure ",
+      "email": "vedant@gmail.com",
+      "message": "test 1 2 3",
+      "rating": "5"
+    },
+    {
+      "id": "715d",
+      "name": "Sanskar Wakchaure ",
+      "email": "prakashwakchaure12345@gmail.com",
+      "message": "vve",
+      "rating": "5"
+    }
+  ]
+}

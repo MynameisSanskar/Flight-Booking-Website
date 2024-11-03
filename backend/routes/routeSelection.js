@@ -2,56 +2,27 @@ var express = require('express');
 var router = express.Router();
 var bus = require('../models/Buses');
 
-
-// router.get('/', (req, res) => {
-//     bus.find({ companyName, startCity, totalseats, availableseats }, (err, result) => {
-//         if (err) res.send(err)
-//         else res.json({ result })
-//     })
-// })
-
+// Route to fetch buses based on startCity and destination
 router.post('/', (req, res) => {
-
-    bus.find({ 'startCity': req.body.startCity, 'destination': req.body.destination }).exec((err, bus) => {
-        if (err) {
-            res.json({ status: false, message: "error while searching" })
-        }
-        else res.json({ bus })
+    console.log("Received request:", req.body);
+    
+    // Fetch buses from the database based on startCity and destination
+    bus.find({ 
+        startCity: req.body.startCity, 
+        destination: req.body.destination 
     })
-})
-
-router.post('/', (req, res) => {
-
-    bus.findOne({ _id: req.body.bId }, (err, bus) => {
+    .exec((err, buses) => {
         if (err) {
-            res.json({ status: false, message: "error while searching with ID" })
+            console.error("Error while searching:", err);
+            return res.status(500).json({ status: false, message: "Error while searching", error: err });
         }
-        else
-            res.json({ bus })
-    })
-})
 
-// router.post('/', (req, res) => {
-//     let newBus = new bus(req.body)
-//     newBus.save((err, bus) => {
-//         if (err) console.log(err)
-//         else res.status(201).json(bus)
-//     })
-// })
+        // Log the retrieved buses
+        console.log("Buses found:", buses);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // Send the list of buses as a response
+        res.json({ status: true, buses });
+    });
+});
 
 module.exports = router;

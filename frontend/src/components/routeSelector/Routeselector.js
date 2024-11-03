@@ -1,117 +1,162 @@
-import React, { useState } from 'react'
-import './Routeselector.css'
-import * as apiCall from './routeApifunc'
-import BusList from '../BusList/BusList'
+import React, { useState } from 'react';
+import './Routeselector.css';
+import BusList from '../BusList/BusList';
+
 export default function Routeselector() {
-    const [dataInp, setData] = useState("")
-    const [startCity, setStartCity] = useState('')
-    const [destination, setDestination] = useState('')
-    const handleToCity = e => {
-        e.preventDefault()
-        setDestination({ destination: e.target.value })
-        localStorage.setItem("destination", e.target.value)
-    }
+    const [dataInp, setData] = useState([]);
+    const [destination, setDestination] = useState('');
+    const [startCity, setStartCity] = useState('');
+    const [flightInfo, setFlightInfo] = useState([]); // State to hold flight information
+
+    const handleToCity = (e) => {
+        e.preventDefault();
+        setDestination(e.target.value);
+        localStorage.setItem("destination", e.target.value);
+    };
+
     const renderBusList = (dataInp) => {
-        if (Object.keys(dataInp).length > 0) {
-            return (<BusList value={dataInp} />)
+        if (Array.isArray(dataInp) && dataInp.length > 0) {
+            return <BusList value={dataInp} onBookNow={handleBookNow} />;
         }
-    }
-    const handleFromCity = e => {
-        e.preventDefault()
-        setStartCity({ startCity: e.target.value })
-        localStorage.setItem("start", e.target.value)
-        // console.log(startCity)
-    }
+        return <div>No buses available for the selected route.</div>;
+    };
 
-    const getRoutes = e => {
-        e.preventDefault()
-        // console.log(startCity,destination)
-        apiCall.getRoutesFromApi(startCity.startCity, destination.destination)
-            .then(response => response.data)
-            .then(data => {
-                setData(data.bus)
-            })
-    }
+    const handleFromCity = (e) => {
+        e.preventDefault();
+        setStartCity(e.target.value);
+        localStorage.setItem("start", e.target.value);
+    };
 
-    const handleDate = e => {
-        e.preventDefault()
-        //    console.log(e.target.value)
-        localStorage.setItem("date", e.target.value)
-    }
-    
+    const getRoutes = async (e) => {
+        e.preventDefault();
+        console.log("Start City:", startCity, "Destination:", destination);
+
+        if (startCity === destination) {
+            alert("Departure and arrival cities cannot be the same.");
+            setData([]);
+            return;
+        }
+
+        const baseURL = "http://localhost:8080/booking/";
+
+        try {
+            const response = await fetch(baseURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ startCity, destination }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("API Response:", data);
+                if (data.status) {
+                    setData(data.buses);
+                } else {
+                    console.error("No buses found or status false");
+                    setData([]);
+                }
+            } else {
+                console.error("Failed to fetch routes:", data);
+            }
+        } catch (error) {
+            console.error("Error fetching routes:", error);
+        }
+    };
+
+    const handleDate = (e) => {
+        e.preventDefault();
+        localStorage.setItem("date", e.target.value);
+    };
+
+    const handleBookNow = (bus) => {
+        // Assuming bus is an object with price and other relevant info
+        const { price, details } = bus; // Adjust according to your bus data structure
+        const bookedFlight = { price, details }; // Create an object with the flight information
+
+        localStorage.setItem("bookedFlight", JSON.stringify(bookedFlight)); // Store flight info in local storage
+        setFlightInfo(prev => [...prev, bookedFlight]); // Update flight information state
+
+        alert(`Bus booked at price: ₹${price}`); // Optionally alert the user
+    };
+
+    const containerHeight = Math.max(500, 200 + dataInp.length * 50); // Adjust height based on the number of buses
+
     return (
-        <div className="rdc">
-            <div className="form-group inline"></div>
-            <div className="main-container">
-                <form className="form-inline" onSubmit={e => getRoutes(e)}>
-                    <select name="ad_account_selected" data-style="btn-new" class="selectpicker" onChange={e => { handleFromCity(e) }}>
-                        <option>FROM</option>
-                        <option>Chennai</option>
-                        <option>Bangalore</option>
-                        <option>Coimbatore</option>
-                        <option>Goa</option>
-                        <option>Delhi</option>
-                        <option>Mumbai</option>
-                        <option>Kolkata</option>
-                        <option>Trivandram</option>
-                        <option>Madurai</option>
-                        <option>Cochin</option>
-                        <option>Pune</option>
-                        <option>Hyderabad</option>
-                        <option>Dehradun</option>
-                        <option>Jaipur</option>
-                        <option>Varanasi</option>
-                        <option>Patna</option>
-                        <option>Agra</option>
-                        <option>Kanpur</option>
-                        <option>Lucknow</option>
-                        <option>Indore</option>
-                        <option>Nagpur</option>
-                        <option>Vadodara</option>
-                        <option>Thane</option>
-                        <option>Bhopal</option>
-                        <option>Surat</option>                        
-                        <option>Nashik</option>
-
-
+        <div className="rdc" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <div className="main-container" style={{ flex: '1', padding: '20px', height: `${containerHeight}px` }}>
+                <form className="form-inline" onSubmit={getRoutes}>
+                    <select name="from_city" data-style="btn-new" className="selectpicker" onChange={handleFromCity}>
+                        <option value="">FROM</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Coimbatore">Coimbatore</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Trivandrum">Trivandrum</option>
+                        <option value="Madurai">Madurai</option>
+                        <option value="Cochin">Cochin</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Dehradun">Dehradun</option>
+                        <option value="Jaipur">Jaipur</option>
+                        <option value="Varanasi">Varanasi</option>
+                        <option value="Patna">Patna</option>
+                        <option value="Agra">Agra</option>
+                        <option value="Kanpur">Kanpur</option>
+                        <option value="Lucknow">Lucknow</option>
+                        <option value="Indore">Indore</option>
+                        <option value="Nagpur">Nagpur</option>
+                        <option value="Vadodara">Vadodara</option>
+                        <option value="Thane">Thane</option>
+                        <option value="Bhopal">Bhopal</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Nashik">Nashik</option>
                     </select>
-                    <select name="ad_account_selected" data-style="btn-new" class="selectpicker" onChange={e => { handleToCity(e) }}>
-                        <option>TO</option>
-                        <option>Hyderabad</option>
-                        <option>Coimbatore</option>
-                        <option>Vishakapatnam</option>
-                        <option>Bangalore</option>
-                        <option>Chenai</option>
-                        <option>Delhi</option>
-                        <option>Mumbai</option>
-                        <option>Kolkata</option>
-                        <option>Trivandram</option>
-                        <option>Madurai</option>
-                        <option>Cochin</option>
-                        <option>Pune</option>                        
-                        <option>Dehradun</option>
-                        <option>Jaipur</option>
-                        <option>Varanasi</option>
-                        <option>Patna</option>
-                        <option>Agra</option>
-                        <option>Kanpur</option>
-                        <option>Lucknow</option>
-                        <option>Indore</option>
-                        <option>Nagpur</option>
-                        <option>Vadodara</option>
-                        <option>Thane</option>
-                        <option>Bhopal</option>
-                        <option>Surat</option>                        
-                        <option>Nashik</option>
+
+                    <select name="to_city" data-style="btn-new" className="selectpicker" onChange={handleToCity}>
+                        <option value="">TO</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Coimbatore">Coimbatore</option>
+                        <option value="Vishakapatnam">Vishakapatnam</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Trivandrum">Trivandrum</option>
+                        <option value="Madurai">Madurai</option>
+                        <option value="Cochin">Cochin</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Dehradun">Dehradun</option>
+                        <option value="Jaipur">Jaipur</option>
+                        <option value="Varanasi">Varanasi</option>
+                        <option value="Patna">Patna</option>
+                        <option value="Agra">Agra</option>
+                        <option value="Kanpur">Kanpur</option>
+                        <option value="Lucknow">Lucknow</option>
+                        <option value="Indore">Indore</option>
+                        <option value="Nagpur">Nagpur</option>
+                        <option value="Vadodara">Vadodara</option>
+                        <option value="Thane">Thane</option>
+                        <option value="Bhopal">Bhopal</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Nashik">Nashik</option>
                     </select>
-                    <input onChange={e => { handleDate(e) }} type="date"></input>
-                    <input type="submit" className=" btn btn-primary btn-md getRoute" />
+
+                    <input onChange={handleDate} type="date" />
+                    <input type="submit" className="btn btn-primary btn-md getRoute" />
                 </form>
 
-                <div>
+                <div style={{ marginTop: '20px', height: '100%', width: '100%' }}>
                     {renderBusList(dataInp)}
                 </div>
             </div>
         </div>
-    )
+    );
 }
+       

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import * as signupFunc from "./SignupFunctions";
 import { FaFacebookF, FaTwitterSquare } from "react-icons/fa";
+// import signupLottie from './signUpLottie'
+import yourGif from './largesignup.gif'
 import "./signup.css";
 export default function Signup({ history }) {
     let [newUser, setnewUser] = useState({});
@@ -39,22 +41,86 @@ export default function Signup({ history }) {
         console.log(newUser);
         history.push("/login");
     };
-
+    const styles = {
+        container: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: '#f8f9fa',
+        },
+        formContainer: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '95%', // Increased width
+            maxWidth: '700px', // Increased max width
+            padding: '50px', // Increased padding
+            borderRadius: '10px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)', // Enhanced shadow
+            backgroundColor: 'white',
+        },
+        formGroup: {
+            marginBottom: '20px',
+            width: '100%',
+        },
+        formControl: {
+            width: '100%',
+            padding: '14px', // Increased padding
+            borderRadius: '5px',
+            border: '1px solid #ced4da',
+            fontSize: '18px', // Increased font size
+        },
+        btnPrimary: {
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            padding: '14px', // Increased padding
+            borderRadius: '5px',
+            cursor: 'pointer',
+            width: '100%',
+            fontSize: '18px', // Increased font size
+        },
+        signupText: {
+            display: 'block',
+            textAlign: 'center',
+            marginTop: '10px',
+            fontSize: '16px',
+        },
+        gif: {
+            width: '100%', // Set width to fit container
+            maxWidth: '500px', // Set a maximum width
+            height: 'auto', // Maintain aspect ratio
+            marginBottom: '20px', // Space below the GIF
+            display: 'block', // Ensure it is block-level for centering
+            marginLeft: 'auto', // Centering in flex container
+            marginRight: 'auto', // Centering in flex container
+        },
+    };
+    
     return (<div className="container" >
+        
         <div className="flex-container" >
             <div className="row full" >
                 <div className="col-md-12" >
                     <div className="form-container" >
-                        <div className="form-container-in" > </div>
+                    <div className="form-container-in" style={{ marginLeft: '16px' }}>
+    {/* Your content goes here */}
+</div>
                         <div className="row sgnUp " >
                             <div className="col-md-6 right-divider pdding" >
                                 <h3 className="lead-text mn-txt" > Join Us with Social </h3>
-                                <div className="icon-soc-fb" >
+                                {/* <div className="icon-soc-fb" >
                                     <FaFacebookF />
                                 </div>
                                 <div className="icon-soc-tw" >
                                     <FaTwitterSquare />
-                                </div>
+                                </div> */}
+                                <img
+                    src={yourGif} // Use the imported GIF
+                    alt="Animated GIF"
+                    style={styles.gif}
+                />
                             </div>
                             <div className="left-divider" >
                                 <div className="col-md-6" >
@@ -123,9 +189,14 @@ export default function Signup({ history }) {
                                             />
                                         </div>
                                         <div class="form-group2" >
-                                            <input required type="submit"
-                                                value="submit"
-                                                className="btn-primary btnn form-submit sub-btn sgnUp" />
+                                        <input 
+    required 
+    type="submit" 
+    value="submit" 
+    className="btn-primary btnn form-submit sub-btn sgnUp" 
+    style={{ marginBottom: '30px' }} 
+/>
+
                                         </div>
                                         <div>
                                             <small className="form-text text-muted link-text" >

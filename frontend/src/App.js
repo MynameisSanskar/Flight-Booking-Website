@@ -14,10 +14,20 @@ import CancelledPage from './components/CancelledTicket/CancelledTicket'
 import FeaturesPage from './components/ChangingFeatures/FeaturesPage'
 import ServicePage from './components/ServicePage/ServicePage'
 import './App.css';
-
+import RouteSelector from './components/routeSelector/Routeselector'
+import SeatSelection from './components/SeatSelection/SeatSelection'
+import PaymentTab from './components/PaymentTab/PaymentTab'
+import CancelTicket from './components/CancelTicket/CancelTicket'
+import AdditionalServices from './components/AdditionalServices/AdditionalServices'
+import TravelHistory from './components/TravelHistory/TravelHistory'
+import Gallery from "./portfolio-gallery/Gallery"
+import ChangingFeatures from './components/ChangingFeatures/ChangingFeatures'
+import CustomerService from './components/CustomerService/CustomerService'
+import signUpLottie from '../src/components/Login-Signup/signUpLottie'
 function App() {
   return (
     <div className="App">
+      {/* <signUpLottie/> */}
       <Router>
         <Switch>
           <Route path="/" exact render={props => <Homepage {...props} />} />
@@ -32,6 +42,17 @@ function App() {
           <Route path="/cancelledPage" exact render={props => <CancelledPage {...props} />} />
           <Route path="/featuresPage" exact render={props => <FeaturesPage {...props} />} />
           <Route path="/ServicePage" exact render ={props => <ServicePage {...props} />} />
+        {/* new Routes */}
+         {/* New routes for additional components */}
+         {/* <Route path="/routeSelector" exact render={props => <RouteSelector {...props} />} />
+          <Route path="/seatSelection" exact render={props => <SeatSelection {...props} />} />
+          <Route path="/paymentTab" exact render={props => <PaymentTab {...props} />} />
+          <Route path="/cancelTicket" exact render={props => <CancelTicket {...props} />} />
+          <Route path="/additionalServices" exact render={props => <AdditionalServices {...props} />} />
+          <Route path="/travelHistory" exact render={props => <TravelHistory {...props} />} />
+          <Route path="/gallery" exact render={props => <Gallery {...props} />} />
+          <Route path="/changingFeatures" exact render={props => <ChangingFeatures {...props} />} />
+          <Route path="/customerService" exact render={props => <CustomerService {...props} />} /> */}
         </Switch>
 
       </Router>

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 const BusSchema = new Schema({
     companyName: {
         type: String
@@ -26,9 +25,17 @@ const BusSchema = new Schema({
     },
     pricePerSeat: {
         type: String
+    },
+    departureTime: {
+        type: Date, // Use Date type for storing date and time together
+        required: true
+    },
+    arrivalTime: {
+        type: Date, // Use Date type for storing date and time together
+        required: true
     }
-}, {collection: "buses"})
+}, {collection: "buses"});
 
-const bus = mongoose.model('bus', BusSchema)
+const bus = mongoose.model('buses', BusSchema);
 
 module.exports = bus;

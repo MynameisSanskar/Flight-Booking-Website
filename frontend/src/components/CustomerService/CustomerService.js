@@ -1,92 +1,169 @@
-
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { FaAngleDoubleDown } from "react-icons/fa";
+import './customerservice.css';
 
-import './customerservice.css'
 export default class App extends React.Component {
-    
-    moveToCusPage = e => {
-        e.preventDefault()
-        window.location.href = '/ServicePage'
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            email: '',
+            message: '',
+            rating: ''
+        };
     }
-    
-    render(){
-    return (
-        
+
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
+    }
+
+    moveToCusPage = async (e) => {
+        e.preventDefault();
+
+        // Construct the form data
+        const formData = {
+            name: this.state.name,
+            email: this.state.email,
+            message: this.state.message,
+            rating: this.state.rating
+        };
+
+        // Send the data to the json-server
+        try {
+            const response = await fetch('http://localhost:3031/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert("Feedback submitted successfully!");
+                window.location.href = '/';
+            } else {
+                alert("Failed to submit feedback.");
+            }
+        } catch (error) {
+            console.error("Error submitting feedback:", error);
+        }
+    }
+
+    render() {
+        return (
             <div className="row">
-
-                <div className="column3" >
+                <div className="column3">
                     <div className="seatInfo">
-                    <p class="new">SWADESHI AIRLINES</p>
-                    <center>
-                    <div className="cen">
-                        <form >
-                        <br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label className='t'>Name: &nbsp;&nbsp;&nbsp;</label>
-                    <input type="text" name="name" id="d" required />
-                    <br/>
-                    <label className='t'>Email-Id : &nbsp;&nbsp;&nbsp;</label>
-                    <input type="email" name="usr_email" id="d" required  />
-                    <br/><br/>
-                    <a href><label className='bo'>FEEDBACK</label> <br></br></a>
-                    <textarea name="message"></textarea>
-                    <br/><br/>
-                    <p className='ne'>RATING</p>
-                        
+                        <p className="new">Boomerang</p>
                         <center>
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="rating" id="1" value="1" className="cen" />
-                        <label class="form-check-label" htmlfor="male">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="rating" id="2" value="2"/>
-                        <label class="form-check-label" htmlFor="female">2</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="rating" id="3" value="3"/>
-                        <label class="form-check-label" htmlFor="female">3</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="rating" id="4" value="4"/>
-                        <label class="form-check-label" htmlFor="female">4</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="rating" id="5" value="5"/>
-                        <label class="form-check-label" htmlFor="female">5</label>
-                        </div>
+                            <div className="cen">
+                                <form onSubmit={this.moveToCusPage}>
+                                    <br />
+                                    <label className='t'>Name: &nbsp;&nbsp;&nbsp;</label>
+                                    <input 
+                                        type="text" 
+                                        name="name" 
+                                        value={this.state.name} 
+                                        onChange={this.handleInputChange} 
+                                        required 
+                                    />
+                                    <br />
+                                    <label className='t'>Email-Id : &nbsp;&nbsp;&nbsp;</label>
+                                    <input 
+                                        type="email" 
+                                        name="email" 
+                                        value={this.state.email} 
+                                        onChange={this.handleInputChange} 
+                                        required 
+                                    />
+                                    <br /><br />
+                                    <label className='bo'>FEEDBACK</label>
+                                    <br />
+                                    <textarea 
+                                        name="message" 
+                                        value={this.state.message} 
+                                        onChange={this.handleInputChange}
+                                    ></textarea>
+                                    <br /><br />
+                                    <p className='ne'>RATING</p>
+                                    <center>
+                                        <div className="form-check form-check-inline">
+                                            <input 
+                                                className="form-check-input" 
+                                                type="radio" 
+                                                name="rating" 
+                                                value="1" 
+                                                checked={this.state.rating === "1"} 
+                                                onChange={this.handleInputChange} 
+                                            />
+                                            <label className="form-check-label">1</label>
+                                        </div>
+                                        <div className="form-check form-check-inline">
+                                            <input 
+                                                className="form-check-input" 
+                                                type="radio" 
+                                                name="rating" 
+                                                value="2" 
+                                                checked={this.state.rating === "2"} 
+                                                onChange={this.handleInputChange} 
+                                            />
+                                            <label className="form-check-label">2</label>
+                                        </div>
+                                        <div className="form-check form-check-inline">
+                                            <input 
+                                                className="form-check-input" 
+                                                type="radio" 
+                                                name="rating" 
+                                                value="3" 
+                                                checked={this.state.rating === "3"} 
+                                                onChange={this.handleInputChange} 
+                                            />
+                                            <label className="form-check-label">3</label>
+                                        </div>
+                                        <div className="form-check form-check-inline">
+                                            <input 
+                                                className="form-check-input" 
+                                                type="radio" 
+                                                name="rating" 
+                                                value="4" 
+                                                checked={this.state.rating === "4"} 
+                                                onChange={this.handleInputChange} 
+                                            />
+                                            <label className="form-check-label">4</label>
+                                        </div>
+                                        <div className="form-check form-check-inline">
+                                            <input 
+                                                className="form-check-input" 
+                                                type="radio" 
+                                                name="rating" 
+                                                value="5" 
+                                                checked={this.state.rating === "5"} 
+                                                onChange={this.handleInputChange} 
+                                            />
+                                            <label className="form-check-label">5</label>
+                                        </div>
+                                    </center>
+                                    <br /><br />
+                                    <button type="submit" className="bt">
+                                        <center>Submit</center>
+                                    </button> &nbsp;&nbsp;
+                                    <button type="reset" className="bt1" value="clear">
+                                        <center>Clear</center>
+                                    </button>
+                                </form>
+                            </div>
+                            <br /><br />
+                            <center>
+                                <p className="te">EMAIL: sanskarwakchaure7@gmail.com</p>
+                                <p className="te">CONTACT NUMBER: 9819219560</p>
+                                <p className="te">ADDRESS: Mahajan Road, Matunga</p>
+                            </center>
                         </center>
-                        <br/><br/>
-                    <button type="submit" className="myform-btn" class="bt" onClick={e => this.moveToCusPage(e)}><center>submit</center></button> &nbsp;&nbsp;
-                    <button type="reset" className="myform-btn" class="bt1" value="clear"><center>clear</center></button>
-                        </form>
-                    
-                    </div>
-                    <br/><br/>
-                    
-                    
-                        <br/>
-                        <center>
-                            <br/>
-                        <p class="te">EMAIL: swadesiairlines@gmail.com</p>
-                    <p class="te">CONTACT NUMBER: 9677934637</p>
-                    <p class="te">ADDRESS:91-Z/19,DELHI,110001 </p>
-                    </center>
-                        </center>
-                        <br/><br/>
-                        <p className='bo'>If you need any information send mail</p>
-
-        <a href="mailto:harishramaraj13@gmail.com" className='bo'>Report via mail</a><br></br>
-                        
-                        
                     </div>
                 </div>
-
             </div>
-
-            
-    )
-
+        );
     }
 }
-
-// arigato

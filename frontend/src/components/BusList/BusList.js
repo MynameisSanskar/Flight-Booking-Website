@@ -1,75 +1,117 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { FaAngleDoubleDown } from "react-icons/fa";
-import './busList.css'
+import { useHistory } from 'react-router-dom'; // Import useHistory
+import './busList.css';
+
 export default function BusList({ value: dataInp }) {
-
-    const [obj, setObj] = useState('')
-    const [reset, Setreset] = useState(false)
-    const [arrowDown, setArrowDown] = useState(false)
-    const [clas, SetClas] = useState(true)
-
+    const history = useHistory(); // Initialize useHistory
+    const [filteredBuses, setFilteredBuses] = useState(dataInp);
+    const [sortOption, setSortOption] = useState('priceAsc');
+    const [selectedBusId, setSelectedBusId] = useState(null);
+    const [showReset, setShowReset] = useState(false);
+    const [arrowDown, setArrowDown] = useState(false);
 
     useEffect(() => {
-        setObj(dataInp)
-    }, [dataInp])
+        handleSort();
+    }, [dataInp, sortOption]);
 
+    const handleSort = () => {
+        let sortedBuses = [...dataInp];
 
-    const handleSubmit = bId => {
-        localStorage.setItem("selectedBusId", bId)
-        SetClas(false)
-        setArrowDown(true)
-    }
+        // Sort based on selected option
+        sortedBuses = sortedBuses.sort((a, b) => {
+            if (sortOption === 'priceAsc') return a.pricePerSeat - b.pricePerSeat;
+            if (sortOption === 'priceDesc') return b.pricePerSeat - a.pricePerSeat;
+            if (sortOption === 'timeAsc') return new Date(a.departureTime) - new Date(b.departureTime);
+            if (sortOption === 'timeDesc') return new Date(b.departureTime) - new Date(a.departureTime);
+            return 0;
+        });
 
+        setFilteredBuses(sortedBuses);
+    };
 
-    const handleReset = (e) => {
-        if (clas === false) {
-            Setreset(true)
-            SetClas(true)
-            setArrowDown(false)
-        }
-        localStorage.removeItem("selectedBusId")
-    }
-
+    const handleSubmit = (bId, pricePerSeat, companyName, departureTime, arrivalTime) => {
+        localStorage.setItem("selectedBusId", bId);
+        localStorage.setItem("selectedBusPrice", pricePerSeat * 10); // Store total price for 10 seats
+        localStorage.setItem("companyName", companyName);
+        localStorage.setItem("departureTime", departureTime);
+        localStorage.setItem("arrivalTime", arrivalTime);
+    
+        setSelectedBusId(bId);
+        setShowReset(true);
+        setArrowDown(true);
+    
+        // Navigate to the Seat Selection tab (menu2)
+        history.push('/routes');
+    };
+    const handleReset = () => {
+        localStorage.removeItem("selectedBusId");
+        setSelectedBusId(null);
+        setShowReset(false);
+        setArrowDown(false);
+    };
 
     const renderFunction = () => {
-        return dataInp.map((bus, idx) => {
-            // let bId = bus._id
+        return filteredBuses.map((bus, idx) => {
+            const { companyName, startCity, destination, pricePerSeat, departureTime, arrivalTime, _id } = bus;
+    
             return (
-                <div key={idx} className="card mt-5 buslist">
-                    <div class="row ml-3">
-                        <div class="col-6 col-sm-3 mt-2 font-weight-bold ">Brand</div>
-                        <div class="col-6 col-sm-3 mt-2 font-weight-bold ">From</div>
-                        <div class="col-6 col-sm-3 mt-2 font-weight-bold ">To</div>
-                        <div class="col-6 col-sm-3 mt-2 font-weight-bold ">Price</div>
-
-                        <div class="w-100 d-none d-md-block"></div>
-
-                        {console.log(bus.seatArray)}
-                        <div class="col-6 col-sm-3 mb-4">{bus.companyName}</div>
-                        <div class="col-6 col-sm-3 mb-4">{bus.startCity}</div>
-                        <div class="col-6 col-sm-3 mb-4">{bus.destination}</div>
-                        <div class="col-6 col-sm-3 mb-4">{bus.pricePerSeat}</div> 
-                        <div class="col-6 col-sm-4 mb-2 ml-0">
-                            <button className={clas ? "btn btn-primary btn-md" : "btn btn-primary btn-md disabled"} onClick={(bId) => { handleSubmit(bus._id) }} >Book Now</button>
+                <div key={idx} className="card mt-2 buslist">
+                    <div className="row ml-3 h-50">
+                        <div className="col-6 col-sm-2 mt-2 font-weight-bold">Brand</div>
+                        <div className="col-6 col-sm-2 mt-2 font-weight-bold">From</div>
+                        <div className="col-6 col-sm-2 mt-2 font-weight-bold">To</div>
+                        <div className="col-6 col-sm-2 mt-2 font-weight-bold">Price</div>
+                        <div className="col-6 col-sm-2 mt-2 font-weight-bold">Departure</div>
+                        <div className="col-6 col-sm-2 mt-2 font-weight-bold">Arrival</div>
+    
+                        <div className="w-100 d-none d-md-block"></div>
+    
+                        <div className="col-6 col-sm-2 mb-4">{companyName}</div>
+                        <div className="col-6 col-sm-2 mb-4">{startCity}</div>
+                        <div className="col-6 col-sm-2 mb-4">{destination}</div>
+                        <div className="col-6 col-sm-2 mb-4">{pricePerSeat}0</div>
+                        <div className="col-6 col-sm-2 mb-4">{new Date(departureTime).toLocaleTimeString()}</div>
+                        <div className="col-6 col-sm-2 mb-4">{new Date(arrivalTime).toLocaleTimeString()}</div>
+    
+                        <div className="col-6 col-sm-4 mb-2 ml-0">
+                            <button
+                                className={`btn btn-primary btn-md ${selectedBusId === _id ? "disabled" : ""}`}
+                                onClick={() => handleSubmit(_id, pricePerSeat, companyName, departureTime, arrivalTime)}
+                            >
+                                Book Now
+                            </button>
                         </div>
-                        <div class="col-6 col-sm-4 mb-2 ml-0">
-                            <span className={reset ? "badge badge-danger ml-5" : "disabled"} onClick={e => handleReset(e)}>Reset</span>
+                        <div className="col-6 col-sm-4 mb-2 ml-0">
+                            <span className={showReset ? "badge badge-danger ml-5" : "disabled"} onClick={handleReset}>
+                                Reset
+                            </span>
                         </div>
                     </div>
-                </div >
-            )
-        })
-
-    }
-
-
+                </div>
+            );
+        });
+    };
+    
     return (
-        <div className="">
+        <div className="bus-list-container">
+            {/* Sort Options */}
+            <div className="sort-container">
+                <select
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
+                    className="form-control mb-4"
+                >
+                    <option value="priceAsc">Sort by Price (Low to High)</option>
+                    <option value="priceDesc">Sort by Price (High to Low)</option>
+                    <option value="timeAsc">Sort by Departure Time (Earliest to Latest)</option>
+                    <option value="timeDesc">Sort by Departure Time (Latest to Earliest)</option>
+                </select>
+            </div>
             {renderFunction()}
             <div className={arrowDown ? "activeArrow" : "nonActive"}>
                 <FaAngleDoubleDown />
             </div>
         </div>
-
-    )
+    );
 }

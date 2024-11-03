@@ -1,39 +1,46 @@
-import React from 'react'
-import RouteSelector from '../routeSelector/Routeselector'
-import SeatSelection from '../SeatSelection/SeatSelection'
-import PaymentTab from '../PaymentTab/PaymentTab'
-import CancelTicket from '../CancelTicket/CancelTicket'
-import AdditionalServices from '../AdditionalServices/AdditionalServices'
-import TravelHistory from '../TravelHistory/TravelHistory'
-import Gallery from "../../portfolio-gallery/Gallery"
-import ChangingFeatures from '../ChangingFeatures/ChangingFeatures'
-import CustomerService from '../CustomerService/CustomerService'
+import React from 'react';
+import RouteSelector from '../routeSelector/Routeselector';
+import SeatSelection from '../SeatSelection/SeatSelection';
+import PaymentTab from '../PaymentTab/PaymentTab';
+import CancelTicket from '../CancelTicket/CancelTicket';
+import AdditionalServices from '../AdditionalServices/AdditionalServices';
+import TravelHistory from '../TravelHistory/TravelHistory';
+import Gallery from "../../portfolio-gallery/Gallery";
+import ChangingFeatures from '../ChangingFeatures/ChangingFeatures';
+import CustomerService from '../CustomerService/CustomerService';
+
 export default function RouteSelection({ history }) {
 
     const handleUserIcon = e => {
-        e.preventDefault()
-        history.push('/profile')
-    }
+        e.preventDefault();
+        history.push('/profile');
+    };
 
     const handleSignOut = e => {
-        e.preventDefault()
-        sessionStorage.removeItem('authToken')
-        localStorage.removeItem('reservedSeats')
-        localStorage.removeItem('nameData')
-        localStorage.clear()
-        history.push('/')
-    }
+        e.preventDefault();
+        sessionStorage.removeItem('authToken');
+        localStorage.removeItem('reservedSeats');
+        localStorage.removeItem('nameData');
+        localStorage.clear();
+        history.push('/');
+    };
 
     const handleLogoClick = e => {
-        e.preventDefault()
-        history.push('/routes')
+        e.preventDefault();
+        history.push('/routes');
     }
-    
+
     return (
-        <div className="container">
+<div 
+    className="container" 
+    
+>
             <div>
                 <nav className="mb-4 navbar navbar-expand-lg navbar-dark bg-unique hm-gradient">
-                    <a href="/#" className="navbar-brand Company-Log" onClick={(e) => handleLogoClick(e)}>SA</a>
+                <a href="/#" className="navbar-brand Company-Log" onClick={(e) => handleLogoClick(e)}>
+    <strong style={{ fontWeight: 'bold', fontSize: '24px' }}>Boomerang</strong>
+</a>
+
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-3" aria-controls="navbarSupportedContent-3" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -50,12 +57,18 @@ export default function RouteSelection({ history }) {
                 </nav>
             </div>
             <div>
-                <ul className="nav nav-pills">
+                <ul className="nav nav-pills"
+                style={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Lighter translucent white background
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '8px' // Added rounded corners
+                }}
+                >
                     <li className="nav-item">
                         <a className="nav-link active" data-toggle="pill" href="#home">Ticket Booking</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link " data-toggle="pill" href="#menu1">Seat Selection</a>
+                        <a className="nav-link" data-toggle="pill" href="#menu1">Seat Selection</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" data-toggle="pill" href="#menu2">Payment</a>
@@ -75,27 +88,23 @@ export default function RouteSelection({ history }) {
                     <li className="nav-item">
                         <a className="nav-link" data-toggle="pill" href="#menu8">Customer Service</a>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <a className="nav-link" data-toggle="pill" href="#menu7">Changing Features</a>
-                    </li>
+                    </li> */}
                 </ul>
 
-                <div className="tab-content">
+                <div className="tab-content" >
                     <div className="tab-pane container active mn-box" id="home"><RouteSelector /></div>
                     <div className="tab-pane container fade mn-box" id="menu1"><SeatSelection /></div>
                     <div className="tab-pane container fade mn-box" id="menu2"><PaymentTab /></div>
                     <div className="tab-pane container fade mn-box" id="menu3"><CancelTicket /></div>
                     <div className="tab-pane container fade mn-box" id="menu4"><TravelHistory /></div>
                     <div className="tab-pane container fade mn-box" id="menu5"><Gallery /></div>
-                    <div className="tab-pane container fade mn-box" id="menu6"><AdditionalServices /></div>                    
+                    <div className="tab-pane container fade mn-box" id="menu6"><AdditionalServices /></div>
                     <div className="tab-pane container fade mn-box" id="menu7"><ChangingFeatures /></div>
                     <div className="tab-pane container fade mn-box" id="menu8"><CustomerService /></div>
-
-                    
-
                 </div>
             </div>
-
         </div>
-    )
+    );
 }

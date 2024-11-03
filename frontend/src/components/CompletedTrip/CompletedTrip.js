@@ -132,12 +132,12 @@ export default class App extends React.Component {
                                 <p className='hdng' > To </p> 
                                 < hr className='hr3' />
                                 <p className='hdng' > Ticket price </p>{' '}
-                                <p className='hdng' > ToTal Sum </p>{' '} </div>{' '}
+                                <p className='hdng' > Total Sum </p>{' '} </div>{' '}
 
                         <div className='col-5' >
                                 
                                 <hr className='hr3' />
-                                <p className='hdng' > 10-01-2022 </p>{' '}
+                                <p className='hdng' > 10-01-2023 </p>{' '}
                                 <p className='hdng' >Coimbatore  </p>{' '}
                                 <p className='hdng' > Lucknow </p>{' '}
                                 <hr className='hr3' />
@@ -163,12 +163,12 @@ export default class App extends React.Component {
                                 <p className='hdng' > To </p> 
                                 < hr className='hr3' />
                                 <p className='hdng' > Ticket price </p>{' '}
-                                <p className='hdng' > ToTal Sum </p>{' '} </div>{' '}
+                                <p className='hdng' > Total Sum </p>{' '} </div>{' '}
 
                         <div className='col-4' >
                                 
                                 <hr className='hr3' />
-                                <p className='hdng' > 19-02-2022 </p>{' '}
+                                <p className='hdng' > 19-02-2023 </p>{' '}
                                 <p className='hdng' >Delhi </p>{' '}
                                 <p className='hdng' > Madurai </p>{' '}
                                 <hr className='hr3' />
@@ -193,12 +193,12 @@ export default class App extends React.Component {
                             <p className='hdng' > To </p> 
                             < hr className='hr3' />
                             <p className='hdng' > Ticket price </p>{' '}
-                            <p className='hdng' > ToTal Sum </p>{' '} </div>{' '}
+                            <p className='hdng' > Total Sum </p>{' '} </div>{' '}
 
                     <div className='col-4' >
                             
                             <hr className='hr3' />
-                            <p className='hdng' > 21-03-2022 </p>{' '}
+                            <p className='hdng' > 21-03-2023 </p>{' '}
                             <p className='hdng' >Manali </p>{' '}
                             <p className='hdng' > Sikkhim </p>{' '}
                             <hr className='hr3' />
